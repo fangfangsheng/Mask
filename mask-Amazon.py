@@ -13,7 +13,7 @@ def trackPrice():
           pass
       else: 
             print("Cheaper!")
-            # sendEmail()
+            sendEmail()
 
 def getPrice():
       page = requests.get(URL, headers=HEADERS)
@@ -22,7 +22,6 @@ def getPrice():
       price = soup.find(id='priceblock_ourprice').get_text().strip()[1:]
       availability = soup.find(id='availability').get_text().strip()
       review_count = int(soup.select("#acrCustomerReviewText")[0].get_text().split()[0])
-      # print(title)
       return price
 
 def sendEmail():
