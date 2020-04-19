@@ -3,12 +3,12 @@ from bs4 import BeautifulSoup
 import time
 import smtplib
 import smtplib
-from Config import EMAIL_ADDRESS, EMAIL_PASSWORD, HEADERS, URL, WANTED_PRICE
+from Config import EMAIL_ADDRESS, EMAIL_PASSWORD, HEADERS, MASK_URL, MASK_WANTED_PRICE
 
 
 def trackPrice():
       price = float(getPrice())
-      if price > WANTED_PRICE:
+      if price > MASK_WANTED_PRICE:
           print("It's still too expensive.")
           pass
       else: 
@@ -16,7 +16,7 @@ def trackPrice():
             sendEmail()
 
 def getPrice():
-      page = requests.get(URL, headers=HEADERS)
+      page = requests.get(MASK_URL, headers=HEADERS)
       soup = BeautifulSoup(page.content, features='lxml')
       title = soup.select("#productTitle")[0].get_text().strip() #soup.find(id='productTitle').get_text().strip()
       price = soup.find(id='priceblock_ourprice').get_text().strip()[1:]
@@ -31,7 +31,7 @@ def sendEmail():
       server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
 
       subject = 'Amazon Price Has Dropped!'
-      body = f"Click the link: {URL}"
+      body = f"Click the link: {MASK_URL}"
       mailtext = f"Subject: {subject} \n\n {body}"
 
       server.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, mailtext)
